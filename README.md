@@ -19,11 +19,7 @@
 ### Intro
 As part of April 2016's [Global Drupal Training Day](https://www.drupal.org/global-training-days/2016#april), we are hosting a Drupal Developer training day on April 9th.
 
-Participants in the training will go through the steps involved in running and developing a simple voting app from a fresh computer using the Docker Toolbox. This simple app will include:
-
-- Some shiz
-
-
+Participants in the training will go through the steps involved in running and developing a simple module and learn about the new Drupal development landscape. This simple module is based on Ted Bowman's [Role Notices training module](https://www.drupal.org/project/role_notices).
 
 To get started on the tutorial, go to the [Tutorial](./tutorial.md)
 
