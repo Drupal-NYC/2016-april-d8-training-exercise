@@ -1,7 +1,7 @@
-# Drupal D8 Developer Training - April 2016 (NYC) :tada: :computer: :rocket:
+# Drupal D8 Developer Training - April 2016 (NYC) :tada: :rocket:
 
 [![Join the chat at https://gitter.im/mirie/2016-april-d8-training-exercise](https://badges.gitter.im/mirie/2016-april-d8-training-exercise.svg)](https://gitter.im/mirie/2016-april-d8-training-exercise?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
+-
 <p align="center">
   <img src="https://www.drupal.org/files/drupal%208%20logo%20Stacked%20CMYK%20300.png" height="150px"/>
 </p>
