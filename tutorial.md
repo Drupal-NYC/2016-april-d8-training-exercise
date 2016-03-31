@@ -27,3 +27,15 @@ The goal of our module will be to build a tool that will allow us to configure n
 - [6.0 Wrapping up](#wrap)
   - [6.1 Review core concepts](#coreConcepts)
   - [6.2 Further exploration](#movingForward)
+
+##Preface
+
+### Prerequisites
+A basic understanding of PHP programming and some experience with the Drupal content management system is helpful but not required. We will work together to guide you through the various topics we explore in this excercise.
+
+### Setting up your development environment
+We have optimized cloud based development environments ready to share using Stack Starter. To get setup go to **[stackstarter.io/spin](http://www.stackstarter.io/spin)** and enter spin code **#trainingday** into the spin code field. This will give you access to the newest version Drupal 8, a web based editor, and console access preloaded with Drush and Drupal Console. 
+
+
+
+
