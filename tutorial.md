@@ -295,6 +295,63 @@ But wait, now what? How do we use this?
 
 In the next section we will need to tell Drupal that our service exsists and inject any dependcies we require. Lets keep moving... 
 
+## 2.2 Registering our service
+
+In our last section we dove into implementing our first service. Besides some of the State API and caching mumbojumbo we just implemented a standard PHP object that gets and sets an array. Drupal knows nothing about this object currently. 
+
+This introduces another pattern that will be persistant in our Drupal 8 development lives. Many of the the tasks we perform when developing consists of this idea: 
+
+```
+Build a tool, and tell Drupal about it. 
+```
+This was coined by [Larry Garfield (aka Crell) in his Drupal 8 Crash course talk](https://www.youtube.com/watch?v=tmT6CATUWbk). This is very powerful and jives well with the idea that Drupal 8 exposes a much more consistant developer experience then earlier versions. 
+
+So we did the first part, we built a tool. Now lets tell Drupal about it. We will do this through the introduction of our second YAML file. 
+
+Lets create a file in the following location: 
+
+```
+/modules/custom/role_notices/role_notices.services.yml
+```
+This file is going to contain all the information we need to let Drupal know we are exposing a service that will be retrievable from other areas of the system through what we call the *Service Container*. Lets go ahead and build this out, the comments in this file have some good explainations we can follow:  
+
+```
+# This file registers this modules service(s).
+services:
+  # We only need 1 service to get and set our notices.
+  # Notice that we use our module machine name as the first part of our service name.
+  # This ensures we won't have naming conflict with another module
+  role_notices.notice_manager:
+    # This is the class that our service will be.
+    # This tells the Drupal's service container which class to use for our service instance.
+    class: Drupal\role_notices\NoticesManager
+    # Our services depends on other services.
+    # We declare them as arguments or dependencies of our service so that the
+    # Service Container will provide them as arguments to our class's constructor.
+    arguments: ['@current_user', '@state']
+    #?#?#?#?#?#?#?#?#?#?#?#?#?#?#?#?#?#?#?#?#?#?#?#?#?#?#?#?#?#?#?#?#?#?#?#?#?#?#?
+    # You may be wondering how you would figure where these services are defined.
+    # All(most?) Drupal services are declared in *.services.yml
+    # So for example to find out where "@current_user is define search like this
+    # inside Drupal code base:
+    #  text: "current_user:"
+    #  file name pattern: *.services.yml
+    #
+    # Could you find these services? What classes are they?
+    # Notices that classes match the types of the arguments to our service's
+    # constructor.
+    #?#?#?#?#?#?#?#?#?#?#?#?#?#?#?#?#?#?#?#?#?#?#?#?#?#?#?#?#?#?#?#?#?#?#?#?#?#?#?
+```
+
+Awesomesauce, we now built a tool, our NoticesManager service, and we told Drupal about it. 
+
+Ok, so are we done? Well our core functionality is built but now we need to build tools that will allow us to actually use this service. 
+
+Lets keep it moving! 
+
+
+
+
 
 
 
