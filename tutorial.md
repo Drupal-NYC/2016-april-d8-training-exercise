@@ -349,6 +349,206 @@ Ok, so are we done? Well our core functionality is built but now we need to buil
 
 Lets keep it moving! 
 
+## 3.0 Defining our first route
+
+A route is a path which is defined for Drupal to return some sort of content on. It is a way we map a path (URL) to a piece of code we write. Drupal 8's routing system replaces parts of hook_menu from previous versions. It is heavilly based on Synfomy's routing system, so by learning this you are in fact also learning some Symfony! 
+
+So what route do we need to define? 
+
+## 3.1 Our configuration form
+
+We want to expose a way for the users of our module to configure notices for any given role in the system. Towards this goal we would want a form that will expose this functionality. We will be learning two core concepts in this part of the excersise:
+
+1. We will learn how to define form in Drupal 8. (build a tool) 
+2. We will learn how to hook up this form to a route (tell Drupal about it)
+
+Lets jump into the first part. Our form will be nicely encapsulated in a PHP class defined in our module. Lets go ahead and create a file in the following location: 
+
+```
+/modules/custom/role_notices/src/Form/RoleNoticesSettingsForm.php
+```
+In this file we will define an object that will enable us to implement all the critical pieces of a form. That is: 
+
+1. Build our form using the Form API style arrays. 
+2. Validate our form using a form validator function (we are actually not doing this here but should)
+3. Submit and process our form data with a submit handler. 
+
+Let go ahead and start writing some code: 
+
+```
+<?php
+/**
+ * @file
+ * Contains \Drupal\role_notices\Form\RoleNoticesSettingsForm.
+ */
+
+namespace Drupal\role_notices\Form;
+
+use Drupal\Core\Form\FormBase;
+use Drupal\role_notices\NoticesManager;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\Core\Form\FormStateInterface;
+```
+
+Just as we did in our service, we first define our namespace and declare any other objects we will be using in our form implemenation.
+
+```
+/**
+ * Simple Settings form.
+ *
+ * This settings form does not save it's settings as config(they need to be
+ * updated on the site) so it does not extend Drupal\Core\Form\ConfigFormBase;
+ */
+class RoleNoticesSettingsForm extends FormBase {
+
+  /**
+   * The state service.
+   *
+   * @var \Drupal\role_notices\NoticesManager
+   */
+  protected $noticesManager;
+  
+  //all of our methods go here.  
+}
+```
+
+What is one big difference you see in our class definition above? 
+
+That's right, we are extending a base class. The base class we are extending is the *FormBase*. *FormBase* implements the *FormInterface*. This interface provides the blueprint for the required methods we need to implement in order to create a working form. 
+
+The other piece you will notice above is that we are defining a protected member variable that will eventually hold our NoticesManager service. 
+
+Ok lets contruct this bad boy: 
+
+```
+  /**
+   * Class constructor.
+   *
+   * @param \Drupal\role_notices\NoticesManager $notices_manager
+   *   The notices manager for getting and setting notices.
+   */
+  public function __construct(NoticesManager $notices_manager) {
+    $this->noticesManager = $notices_manager;
+  }
+```
+Look at that, there is our nifty contructor based dependency injection again! 
+
+Unlike the services YAML file which took care of injecting our dependieces we need for our service, the FormBase also implements the *ContainerInjectionInterface* which requires us to define this next method: 
+
+```
+/**
+   * Create function to provide our necessary service.
+   *
+   * This works because we are extending FormBase which implements
+   * ContainerInjectionInterface.
+   *
+   * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
+   *   The container that lets us get our service.
+   *
+   * @link https://www.drupal.org/node/2133171 For more on dependency injection
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+    /*
+     *  Load the service required to construct this class.
+     *  Notice that this is the name we use to define our service in role_notices.services.yml
+     */
+      $container->get('role_notices.notice_manager')
+    );
+  }
+  ```
+There are some interesting things happening here. This is what we call a **factory method**. It is responsible for creating a new instance of itself. Not only does it create an instance of itself but it also injects any dependencies it will require by extracting them from the *service container*. 
+
+Pretty cool stuff! 
+
+One last auxillary method we need to define is the *getFormID* method. Because we do still have the hook system in Drupal 8 we need to tell our procedual code what our form ID is. This enables us to still use features such as hook_form_alter and the like: 
+
+```
+  /**
+   * Returns a unique string identifying the form.
+   *
+   * @return string
+   *   The unique string identifying the form.
+   */
+  public function getFormID() {
+    return 'role_notices_setting_form';
+  }
+```
+
+Ok with our form now able to create itself, inject its dependencies, and tell some of the legacy hooks who we are lets move onto actually defining our form by implementing the buildForm method: 
+
+```
+/**
+   * Form constructor.
+   *
+   * @param array $form
+   *   An associative array containing the structure of the form.
+   * @param FormStateInterface $form_state
+   *   An associative array containing the current state of the form.
+   *
+   * @return array
+   *   The form structure.
+   */
+  public function buildForm(array $form, FormStateInterface $form_state) {
+    $role_names = user_role_names(TRUE);
+    /*
+     * Using an empty container with #tree property
+     *  will make our values come back as array.
+     */
+    $form['role_notices_notices'] = array(
+      '#tree' => TRUE,
+    );
+    $notices = $this->noticesManager->getAllNotices();
+    // Create 1 text area for each role.
+    foreach ($role_names as $role_id => $role_name) {
+      $form['role_notices_notices'][$role_id] = array(
+        '#type' => 'textarea',
+        '#title' => $role_name,
+        '#description' => $this->t('Add a notice for the %role role', array('%role' => "<strong>$role_name</strong>")),
+        '#default_value' => isset($notices[$role_id]) ? $notices[$role_id] : '',
+      );
+    }
+    $form['actions'] = array('#type' => 'actions');
+    $form['actions']['submit'] = array(
+      '#type' => 'submit',
+      '#value' => $this->t('Save Text settings'),
+    );
+    return $form;
+  }
+  ```
+For those of us familar with Drupal 7 form building this should look familar. We will still be defining these form arrays in this fashion. 
+
+Lets read this code. What is it doing? 
+
+Ok, now we will be defining one more method in our form. That is our submit handler: 
+
+```
+/**
+   * Form submission handler.
+   *
+   * @param array $form
+   *   An associative array containing the structure of the form.
+   * @param FormStateInterface $form_state
+   *   An associative array containing the current state of the form.
+   */
+  public function submitForm(array &$form, FormStateInterface $form_state) {
+    $form_values = $form_state->getValues();
+    $this->noticesManager->setAllNotices($form_values['role_notices_notices']);
+    drupal_set_message($this->t('The notices have been saved.'));
+  }
+```
+
+This method quite simply gets the form values and passes them off to our service for processing. 
+
+Lets talk about this for a moment and explore how we were able to use our service within the context of this form. 
+
+Great! We just built a form... now what? 
+
+Well... lets tell Drupal about it! 
+
+
+
+
 
 
 
