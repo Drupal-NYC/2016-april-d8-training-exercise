@@ -546,8 +546,60 @@ Great! We just built a form... now what?
 
 Well... lets tell Drupal about it! 
 
+### 3.2 Lets tell Drupal about it
 
+Just as we experienced with the development of our service we now have a class implemented but Drupal does not know about it. How do we go about telling Drupal about our form? 
 
+This leads us to the introduction of our third YAML file, the routing.yml file. This file declares paths in our system and defines various properies of these paths. This file lives in our modules root directory. 
+
+Lets go ahead and create a file in the following location: 
+
+```
+/modules/custom/role_notices/role_notices.routing.yml
+```
+The name of this file should always following the pattern <module-name>.routing.yml
+
+Alright lets go ahead and build this file out: 
+
+```
+# machine name for the route.
+# Convention for machine name is module_name.unique_name
+role_notices.settings_form:
+  # system path that will controlled by form controller
+  path: '/admin/people/role_notices'
+  defaults:
+    # Class that creates the form
+    _form: 'Drupal\role_notices\Form\RoleNoticesSettingsForm'
+  requirements:
+      # Permission the user must have to view this page.
+      # We created this permission in role_notices_permission
+      _permission: 'administer role notices'
+```
+
+Lets talk a little bit about what exactly is happening here. We are defining a machine name for our route, then defining our path. After that we give our route some defaults. For a form we tell the routing system about our form giving it our namespaced class name. After that we give the route some requirements which in our case is a permission we will define in our next YAML, the permissions.yml file. 
+
+Lets go ahead and create the following file: 
+
+```
+/modules/custom/role_notices/role_notices.permissions.yml
+```
+
+In this file we will define one simple permission: 
+
+```
+# Since the access to our new custom pages will be granted based on
+# special permissions, we need to define what those permissions are here.
+# This ensures that they are available to enable on the permissions
+# administration pages.
+administer role notices:
+  title: 'Administer Role Notices'
+```
+
+Easy as that! We now have a form, wired to a path in our system, which uses a custom permission, and leverages our NoticesManager service.
+
+Good work, lets go ahead and enable our module and see if we can see this in action!
+
+But wait there is more! In our next section we will explore how we actually display these notices to our users. 
 
 
 
