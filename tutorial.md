@@ -18,7 +18,8 @@ The goal of our module will be to build a tool that will allow us to configure n
 - [3.0 Defining our first route](#route)
   - [3.1 Our configuration form](#form)
   - [3.2 Lets tell Drupal about it](#route)
-- [4.0 Displaying our our notices](#display)
+  - [3.3 Linking up our form](#linkup)
+- [4.0 Displaying our notices](#display)
   - [4.1 Defining a display field](#displayField)
   - [4.2 Populating  our display field with notices](#displaying)
 - [5.0 Bonus: Defining a block](#blocks)
@@ -597,11 +598,146 @@ administer role notices:
 
 Easy as that! We now have a form, wired to a path in our system, which uses a custom permission, and leverages our NoticesManager service.
 
+### 3.3 Linking up our form
+
+Ok one last small detail. We want our users to be able to access this form without having to explicitly know the path we just defined. In Drupal 7 this is something we did in hook_menu. This has now bee extracted out to a few YAML files. For our purposes we want to add a local task on the user listing (aka collection) view. Lets go ahead and create the following file: 
+
+```
+/modules/custom/role_notices/role_notices.links.task.yml
+```
+
+This file will define our menu entry for this route: 
+
+```
+# Define the 'local' links for the module
+role_notices.settings_form:
+  title: 'Role Notices'
+  # route_name connects our task to the route defined in role_notices.routing.yml
+  route_name: role_notices.settings_form
+  # Declaring the base_route will create our task as a tab connected to the menu
+  # item for the user.admin_account route
+  base_route: entity.user.collection
+  weight: 15
+```
+
 Good work, lets go ahead and enable our module and see if we can see this in action!
 
-But wait there is more! In our next section we will explore how we actually display these notices to our users. 
+But wait there is more! In our next section we will explore how we actually display these notices to our users.
+
+## 4.0 Displaying our notices
+
+Up until this point we have done a bunch of work without having to create a .module file or even talk about the hook system! Well, in Drupal 8 the hook system is still part of our lives, just not as big of a part. 
+
+The next piece of the puzzle for our module is to actually display user notices on the users page. In more formal Drupal speak we want to display notices on the user entity view page for any given user in any given role. 
+
+To accomplish this we will be introducing two hooks. These hooks will be implemented in our .module file
+
+So lets go ahead and create the following file: 
+
+```
+/modules/custom/role_notices/role_notices.module
+```
+
+Alright, let keep moving...
+
+### 4.1 Defining a display field
+
+In order to properly integrate with the orderable fields screens in Drupal we need implement the *hook_entity_extra_field_info* hook. Through this hook we can add a display field to the **manage display** screen for the user entity. Lets see what this looks like: 
+
+```
+/**
+ * Implements hook_entity_extra_field_info().
+ *
+ * Add the our notices as a display field on the user.
+ *
+ * @see role_notices_user_view()
+ */
+function role_notices_entity_extra_field_info() {
+  $fields['user']['user']['display']['role_notices'] = array(
+    'label' => t('Notices'),
+    'description' => t('Notices for the user.'),
+    'weight' => 10,
+  );
+
+  return $fields;
+}
+```
+
+Simply put this hook returns an array that contains information about the field we are defining. This code lives right in the .module file itself. 
+
+Notice that this hook does not define the contents of the field, it just defines its exsistance. This allows us to order this field on the manage display screen just as we can with any field in the Field UI. The next hook will actually do the work of populating the notices. 
 
 
+### 4.2 Populating our display field with notices
+
+The next hook we will need to implement will enable us to populate the display field we defined in the last section. We will accomplish this by leveraging the *hook_ENTITY_TYPE_view* hook. In our case, since we are displaying this on the user entity, *hook_user_view*.
+
+Lets take a look at the code here: 
+
+```
+/**
+ * Implements hook_ENTITY_TYPE_view().
+ *
+ * For USER entity type.
+ * We use this hook to render our notices on the user view.
+ */
+function role_notices_user_view(array &$build, UserInterface $account, EntityViewDisplayInterface $display) {
+  /** @var Drupal\Core\Session\AccountProxy $logged_in_user */
+  $logged_in_user = \Drupal::service('current_user');
+  if ($account->id() == $logged_in_user->id()) {
+    if ($display->getComponent('role_notices')) {
+      $notices_manager = \Drupal::service('role_notices.notice_manager');
+      $notices = $notices_manager->getUserNotices();
+      $build['role_notices'] = array(
+        '#type' => 'item',
+        '#markup' => '<h4 class="label">' . t('Role Notices') . '</h4>',
+      );
+
+      $build['role_notices']['notices'] = array(
+        '#theme' => 'item_list',
+        '#items' => $notices,
+        '#cache' => array(
+          /*
+           * Add cache tags so that this user view will be rebuilt when one of
+           * the notices changes.
+           *
+           * @see Drupal\role_notices\NoticesManager::setAllNotices();
+           */
+
+          'tags' => $notices_manager->getRenderTags(array_keys($notices)),
+        ),
+      );
+    }
+  }
+}
+```
+Lets talk a bit about what this hook is doing. Some really interesting happenings here. You will notices that we are leveraging our *NoticesManager* service to perform various tasks with our notices. We are accessing this service in a slightly different way then how we saw with our Form. We are using the global *\Drupal* object to directly access the service container and retrieve an instance of our service. 
+
+You can think of this *\Drupal* object as a bridge between procedural land and OO land. 
+
+You will also notices we are using this object to retrieve the current user. 
+
+Ok so what are we missing here? 
+
+Well do to the fact that we are using the types *UserInterface* and *EntityViewDisplayInterface* as parameters to this hook we do need to declare they use at the top of this file. If we did not we would need to decalare its absoluate namespace in the parameter list, not cool. Lets go ahead and add this code to the top of our file: 
+
+```
+<?php
+/**
+ * @file
+ * Global function code file for role_notices module.
+ *
+ * This files contains our implementation of Drupal hooks.
+ * Most of our module code will be in the /src directory.
+ */
+
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\user\UserInterface;
+```
+
+Excellent! Good work team!! We now have a working module that fits the goals we defined. 
+
+Who wants more? If so, lets dive into a little bonus section... and define a block.
 
 
 
