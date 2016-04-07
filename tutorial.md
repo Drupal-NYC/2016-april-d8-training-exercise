@@ -739,6 +739,173 @@ Excellent! Good work team!! We now have a working module that fits the goals we 
 
 Who wants more? If so, lets dive into a little bonus section... and define a block.
 
+## 5.0 Bonus: Defining a block
+
+Another large change to our Drupal development lives entails the idea of a plugin. Plugins are small pieces of functionality that are swappable. 
+
+What does that mean? 
+
+Well think of things like *field widgets* and *image styles*. Plugins implement different behaviors with a common interface. Unlike a service where the behavior is the same but the implementation may be different. Think about our NoticeManager service but using the Config system as opposed to the State API. 
+
+In Drupal 8 [Blocks are now plugins](https://www.drupal.org/node/1880620). Bye bye *hook_block_info* and the like. 
+
+### 5.1 Where plugins live
+
+Plugins, which include our blocks will live in the `src/Plugin` directory of our module. Blocks will live in `src/Plugin/Block`. Lets go ahead and create the following file: 
+
+```
+/modules/custom/role_notices/src/Plugin/Block/RoleNoticesBlock.php
+```
+
+Following our pattern of: 
+
+1. Build a tool. 
+2. Tell Drupal about it. 
+
+Blocks (and all plugins) follow the same pattern with a big different to how we accomplish the second part. To tell Drupal about our plugin we use annonations. 
+
+Lets dive into our block...
+
+### 5.2 Extending BlockBase
+
+Lets go ahead build our block with the following code: 
+
+```
+<?php
+
+/**
+ * @file
+ * Contains Drupal\role_notices\Plugin\Block\RoleNoticesBlock.
+ *
+ * This is Plugin of the Block type.
+ * Drupal finds out about this block via annotations
+ *
+ * If coming from Drupal 7 the annotations replace hook_block_info.
+ * Build function replaces hook_block_view
+ *
+ * *** IMPORTANCE OF AN IDE ***
+ * In this class we will implement the interface: ContainerFactoryPluginInterface
+ * To do so we must implement the methond "create".
+ * If we don't do so this will be a fatal PHP error.
+ *
+ * If you are using a good IDE it will notify you are this error in your
+ * workspace as you work.
+ *
+ * If you are using an IDE comment out the "create" function to see how your
+ * IDE notifies you of this error.
+ *
+ * Also because we are extending the abstract class BlockBase which implements
+ * BlockPluginInterface we must also implement the "build" method from
+ * BlockPluginInterface.
+ */
+
+namespace Drupal\role_notices\Plugin\Block;
+
+
+use Drupal\Core\Block\BlockBase;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\role_notices\NoticesManager;
+use Drupal\Core\Access\AccessResult;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+
+/**
+ * Provides a "Notices" block.
+ *
+ * Following part of comments is an annotation
+ *
+ * @link https://drupal.org/node/1882526
+ *
+ * @Block(
+ *   id = "role_notices",
+ *   admin_label = @Translation("Role Notices")
+ * )
+ */
+class RoleNoticesBlock extends BlockBase implements ContainerFactoryPluginInterface {
+  /**
+   * The Notices Manager service.
+   *
+   * @var \Drupal\role_notices\NoticesManager
+   */
+  protected $noticesManager;
+
+  /**
+   * Constructs a RNoticesBlock object.
+   *
+   * @param array $configuration
+   *   A configuration array containing information about the plugin instance.
+   * @param string $plugin_id
+   *   The plugin ID for the plugin instance.
+   * @param mixed $plugin_definition
+   *   The plugin implementation definition.
+   * @param \Drupal\role_notices\NoticesManager $notices_manager
+   *   The Role Notices NoticesManager.
+   */
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, NoticesManager $notices_manager) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition);
+    $this->noticesManager = $notices_manager;
+  }
+
+  /**
+   * Creates an instance of the plugin.
+   *
+   * We must implement this because our class implements:
+   *  \Drupal\Core\Plugin\ContainerFactoryPluginInterface.
+   *
+   * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
+   *   The container to pull out services used in the plugin.
+   * @param array $configuration
+   *   A configuration array containing information about the plugin instance.
+   * @param string $plugin_id
+   *   The plugin ID for the plugin instance.
+   * @param mixed $plugin_definition
+   *   The plugin implementation definition.
+   *
+   * @return static
+   *   Returns an instance of this plugin.
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    return new static(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $container->get('role_notices.notice_manager')
+    );
+  }
+
+  /**
+   * Overrides \Drupal\block\BlockBase::blockAccess().
+   */
+  protected function blockAccess(AccountInterface $account) {
+    return AccessResult::allowedIf($account->isAuthenticated());
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function build() {
+    /*
+     * Without dependency injection, we could have accessed the NoticesManager
+     * service directly using:
+     * @code
+     * return array(
+     *  '#theme' => 'item_list',
+     *  '#items' => \Drupal::service('role_notices.notice_manager')->getUserNotices(),
+     * );
+     * @endcode
+     *
+     */
+    return array(
+      '#theme' => 'item_list',
+      '#items' => $this->noticesManager->getUserNotices(),
+    );
+  }
+
+}
+```
+
+Phew that was alot of code! Lets bring this into our project and discuss what is going on here! 
+
 
 
 
