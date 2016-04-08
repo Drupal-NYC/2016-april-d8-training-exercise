@@ -9,7 +9,7 @@ The goal of our module will be to build a tool that will allow us to configure n
 - [Preface](#preface)
   - [Prerequisites](#prerequisites)
   - [Setting up your development environment](#setting-up-your-development-environment)
-- [1.0 - Structure of our module](#1.0-structure-of-our-module)
+- [1.0 - Structure of our module](#10-structure-of-our-module)
   - [1.1 Where will our module live?](#10-structure-of-our-module)
   - [1.2 Creating our .info.yml file](#12-creating-our-.info.yml-file)
 - [2.0 - Defining our Notices service](#20-defining-our-notices-service)
