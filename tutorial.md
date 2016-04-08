@@ -7,12 +7,12 @@ The goal of our module will be to build a tool that will allow us to configure n
 
 ### Table of Contents
 - [Preface](#preface)
-  - [Prerequisites](#prereqs)
-  - [Setting up your development environment](#environment)
-- [1.0 - Structure of our module](#preface)
-  - [1.1 Where will our module live?](#modlive)
-  - [1.2 Creating our .info.yml file](#infoyml)
-- [2.0 - Defining our Notices service](#service)
+  - [Prerequisites](#prerequisites)
+  - [Setting up your development environment](#setting-up-your-development-environment)
+- [1.0 - Structure of our module](#1.0-structure-of-our-module)
+  - [1.1 Where will our module live?](#1.1--where-will-our-module-live?)
+  - [1.2 Creating our .info.yml file](#1.2-creating-our-.info.yml-file)
+- [2.0 - Defining our Notices service](#2.0--defining-our-notices-service)
   - [2.1 Designing the NoticesManager service](#noticeManager)
   - [2.2 Registering our service](#register)
 - [3.0 Defining our first route](#route)
