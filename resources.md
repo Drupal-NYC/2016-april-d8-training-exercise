@@ -3,16 +3,17 @@
 Helpful Resources as you learn about Drupal Development for D8!
 
 ### Table of Contents
-- [Drupal Developer Training Day Slides](http://mirie.github.io/drupal8-training-day/#/) **<< TODO: Update LINK!!!!**
+- [Drupal Developer Training Day Slides](http://drupal-8-study-group.github.io/2016-april-drupal8-training-day-deck/#/)
 - [Overview](#overview)
 - [OOP and Symfony](#oop-and-symfony)
 	- [Object-Oriented Programming](#object-oriented-programming)
 	- [YAML](#yaml)
-	- [Dependency Injection & Symfony](#dependenct-injection-symfony)
+	- [Dependency Injection & Symfony](#dependency-injection-and-symfony)
 - [Tools](#tools)
 	- [Drupal Console](#drupal-console)
-	- [Drupal Make](#drupal-make)
+	- [Drush Make](#drush-make)
 - [Configuration Management (CMI)](#configuration-management)
+- [Media Management](#media-guide)
 - [Extending Drupal](#extending-drupal)
 	- [Routing](#routing)
 	- [Blocks](#blocks)
@@ -44,7 +45,7 @@ Helpful Resources as you learn about Drupal Development for D8!
 - [YAML](http://www.yaml.org/)
 - [YAML vs Annotations Discussion](https://www.drupal.org/node/1683644)
 
-### Dependency Injection & Symfony
+### Dependency Injection and Symfony
 
 - [Dependency injection in Drupal 8, an introduction.](http://blog.openlucius.com/en/blog/dependency-injection-drupal-8-introduction)
 - [Services and dependency injection in Drupal 8](https://www.drupal.org/node/2133171)
@@ -57,11 +58,15 @@ Dependency Injection Container](http://pimple.sensiolabs.org/)
 
 ## Tools
 
+A couple of tips on Tools:
+
+You will need a robust IDE (PHPStorm, Eclipse, Netbeans): The importance of an IDE goes hand in hand with D8's shift to OOP. You will be extending classes provided by Drupal core when developing modules. An IDE will be able to tell when you are doing this incorrectly and let you know what you will need to do to correct it. It will also accelerate your development in inserting required methods of the class your extending or the interface your implementing.
+    
 - [XDebug](https://xdebug.org/)
-- [Devel](https://www.drupal.org/project/devel) - also remember to enable WebProfiler!
+- [Devel](https://www.drupal.org/project/devel) - also remember to enable the **WebProfiler**!
 
 ### Drupal Console
-- [Drupal Console](https://drupalconsole.com/)
+- [Drupal Console](https://drupalconsole.com/) -- checkout the **learning mode**!
 - [What is Drupal Console for me](http://enzolutions.com/articles/2015/01/25/what-is-drupal-console-for-me/)
 
 ### Drush Make
@@ -75,6 +80,9 @@ Dependency Injection Container](http://pimple.sensiolabs.org/)
 - [Principles of Configuration Management - Part One](https://www.chapterthree.com/blog/principles-configuration-management-part-one)
 - [Principles of Configuration Management - Part Two](https://www.chapterthree.com/blog/principles-configuration-management-part-two)
 - [The Drupal 8 configuration schema cheat sheet](http://hojtsy.hu/blog/2014-dec-12/drupal-8-configuration-schema-cheat-sheet)
+
+## Media Guide
+- [Drupal 8 Media Guide Gitbook by the Drupal Media Team](https://www.gitbook.com/book/drupal-media/drupal8-guide/details)
 
 ## Extending Drupal
 ### Routing
