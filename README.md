@@ -52,4 +52,4 @@ Before you start the tutorial, please make sure you do the following:
 3. Make sure to talk! Talk a lot!!!
 4. **Switch roles often — at least every half hour.**
 5. Go to: [http://www.stackstarter.io/spin](http://www.stackstarter.io/spin) and enter the provided spin code for today.
-6. Ok, now you can get started with the [tutorial](./tutorial)!
+6. Ok, now you can get started with the [tutorial](./tutorial.md)!
