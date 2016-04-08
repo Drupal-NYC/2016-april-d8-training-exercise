@@ -906,7 +906,26 @@ class RoleNoticesBlock extends BlockBase implements ContainerFactoryPluginInterf
 
 Phew that was alot of code! Lets bring this into our project and discuss what is going on here! 
 
+## 6.0 Wrapping up
+Ok awesome, we covered alot of concepts in this excercise. As you can see our DX has changed significantly in this new version of Drupal.
 
+### 6.1 Review core concepts
+So what did we learn today? Lets summarize: 
+
+1. The basic structure and layout of a Drupal 8 module. 
+2. The idea of a ***Service*** and how to inject them into various components. 
+3. We illulustrated how to develop Forms in Drupal 8.
+4. We learned how to define a Route and connect this to our form. 
+5. We saw how we will still use hooks and how to define a field on the user entity. 
+6. Lastly, we illustrated the Plugin system by defining our own block. 
+
+Wow! That is alot for one day. Good job! 
+
+### 6.2 Further Exploration
+Even with all we did today... there is still so much to learn. It never stops, its what makes this work exciting! We have a resources page available [here](https://github.com/Drupal-8-Study-Group/2016-april-d8-training-exercise/blob/master/resources.md) chock full of links for further exploration. 
+
+Happy building! 
+  
 
 
 
