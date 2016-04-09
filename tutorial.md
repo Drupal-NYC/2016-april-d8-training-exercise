@@ -171,7 +171,7 @@ OK now for our contructor. Now this starts to get interesting:
    *
    * @param \Drupal\Core\Session\AccountInterface $user
    *   The current user.
-   * @param Drupal\Core\State\StateInterface $state
+   * @param \Drupal\Core\State\StateInterface $state
    *   Used to get and save notices from site state.
    */
   public function __construct(AccountInterface $user, StateInterface $state) {
