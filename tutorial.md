@@ -3,7 +3,9 @@
 ### Goals
 The goal of this exercise is to work out our understanding of Drupal 8 module development. This document contains a series of sections. Each sections will bring us closer to our fully functioning module.
 
-The goal of our module will be to build a tool that will allow us to configure notices which will be displayed only for certain roles. The module will take us through many of the core concepts of Drupal 8 module development. All code for this module will be available here (@todo add link) 
+The goal of our module will be to build a tool that will allow us to configure notices which will be displayed only for certain roles. The module will take us through many of the core concepts of Drupal 8 module development. All code for this module will be [available here](https://www.drupal.org/project/role_notices).
+
+<a name="top"></a>
 
 ### Table of Contents
 - [Preface](#preface)
@@ -38,7 +40,7 @@ A basic understanding of PHP programming and some experience with the Drupal con
 We have optimized cloud based development environments ready to share using Stack Starter. To get setup go to **[stackstarter.io/spin](http://www.stackstarter.io/spin)** and enter spin code **#trainingday** into the spin code field. This will give you access to the newest version Drupal 8, a web based editor, and console access preloaded with Drush and Drupal Console. 
 
 ## 1.0 Structure of our module
-Like previous versions of Drupal, Drupal 8 is modular in nature. Modules are basically small collections of configuration and code that either extend and/or enhance your Drupal application.  
+Like previous versions of Drupal, Drupal 8 is modular in nature. Modules are basically small collections of configuration and code that either extend and/or enhance your Drupal application.
 
 ### 1.1 Where will our module live?
 In Drupal 8 our modules live in the `/modules` directory. This is unlike older versions where we placed modules in the `/sites/all/modules` directory. Each module lives in its own directory. You can think of this as your modules own little world were it will be able to integrate and manipulate the larger world around it. There is where we will be doing most of of work. 
@@ -88,6 +90,8 @@ dependencies:
 Lets go ahead and place the above into our `role_notices.info.yml` file. Once you are done lets head over the to the `/admin/modules`. 
 
 What do you see?
+
+[Back to top](#top)
 
 ## 2.0 - Defining our Notices service
 
@@ -294,7 +298,9 @@ Awesome... we just build our first service in Drupal 8, great work!
   
 But wait, now what? How do we use this? 
 
-In the next section we will need to tell Drupal that our service exsists and inject any dependcies we require. Lets keep moving... 
+In the next section we will need to tell Drupal that our service exsists and inject any dependcies we require. Lets keep moving...
+
+[Back to top](#top) 
 
 ## 2.2 Registering our service
 
@@ -348,7 +354,9 @@ Awesomesauce, we now built a tool, our NoticesManager service, and we told Drupa
 
 Ok, so are we done? Well our core functionality is built but now we need to build tools that will allow us to actually use this service. 
 
-Lets keep it moving! 
+Lets keep it moving!
+
+[Back to top](#top) 
 
 ## 3.0 Defining our first route
 
@@ -545,7 +553,9 @@ Lets talk about this for a moment and explore how we were able to use our servic
 
 Great! We just built a form... now what? 
 
-Well... lets tell Drupal about it! 
+Well... lets tell Drupal about it!
+
+[Back to top](#top) 
 
 ### 3.2 Lets tell Drupal about it
 
@@ -623,6 +633,8 @@ role_notices.settings_form:
 Good work, lets go ahead and enable our module and see if we can see this in action!
 
 But wait there is more! In our next section we will explore how we actually display these notices to our users.
+
+[Back to top](#top)
 
 ## 4.0 Displaying our notices
 
@@ -738,6 +750,8 @@ use Drupal\user\UserInterface;
 Excellent! Good work team!! We now have a working module that fits the goals we defined. 
 
 Who wants more? If so, lets dive into a little bonus section... and define a block.
+
+[Back to top](#top)
 
 ## 5.0 Bonus: Defining a block
 
@@ -904,7 +918,9 @@ class RoleNoticesBlock extends BlockBase implements ContainerFactoryPluginInterf
 }
 ```
 
-Phew that was alot of code! Lets bring this into our project and discuss what is going on here! 
+Phew that was alot of code! Lets bring this into our project and discuss what is going on here!
+
+[Back to top](#top) 
 
 ## 6.0 Wrapping up
 Ok awesome, we covered alot of concepts in this excercise. As you can see our DX has changed significantly in this new version of Drupal.
@@ -924,7 +940,9 @@ Wow! That is alot for one day. Good job!
 ### 6.2 Further Exploration
 Even with all we did today... there is still so much to learn. It never stops, its what makes this work exciting! We have a resources page available [here](https://github.com/Drupal-8-Study-Group/2016-april-d8-training-exercise/blob/master/resources.md) chock full of links for further exploration. 
 
-Happy building! 
+Happy building!
+
+[Back to top](#top) 
   
 
 
