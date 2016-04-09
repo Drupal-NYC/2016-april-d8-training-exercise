@@ -75,7 +75,7 @@ This file contains a bunch of useful information about our module. We will use i
 
 Lets see how this looks in YAML format: 
 
-```
+```yaml
 # This .info.yml files provides the basic information about our module to Drupal
 # More: https://www.drupal.org/node/2000204
 name: Role Notices
@@ -125,7 +125,7 @@ Ok great lets go ahead and build this bad boy out. **Open this file in your edit
 
 In the first piece of our service we will define our class name, define our namespace, and declare some of the other objects we will be using: 
 
-```
+```php
 <?php
 /**
  * @file
@@ -143,7 +143,7 @@ You will notice we will be leveraging the AccountInterface and the StateInterfac
 
 Lets go ahead and declare some protected member variables and declare our class name: 
 
-```
+```php
 class NoticesManager {
 
   /**
@@ -165,7 +165,7 @@ class NoticesManager {
 ```
 OK now for our contructor. Now this starts to get interesting: 
 
-```
+```php
   /**
    * Creates a new Notices Manager.
    *
@@ -183,7 +183,7 @@ Our contructor takes two parameters. The current user and the StateInterface. Wh
 
 Ok lets move on to the methods that implement our functionality. Our first method will return all users notices for a particular users set of roles: 
 
-```
+```php
   /**
    * Utility function to get the notices of the current user.
    *
@@ -202,7 +202,7 @@ Here we see how we can use the StateInterface to retrieve a given key from the S
 
 Now lets implement a simplier method that will return all notices in the system: 
 
-```
+```php
 /**
    * Get notices for all roles.
    *
@@ -220,7 +220,7 @@ We are cooking!
 
 Lets now develop a method that will take an array of notices as a parameter and update the notices in our system: 
 
-```
+```php
   /**
    * Set notices for all roles.
    *
@@ -251,7 +251,7 @@ Lets now develop a method that will take an array of notices as a parameter and 
 ```
 So we don't overwrite all the notices in our system when we run this method we will call another method, getUpdateNotices which will merge the new notices with already exsisting notices:
 
-```
+```php
 /**
    * Return the rids for any Notices that have been updated.
    *
@@ -274,7 +274,7 @@ So we don't overwrite all the notices in our system when we run this method we w
 
 We are almost there. The last method we will need pertains to caching. Drupal 8 has a very powerful cache system that allows us to selectivly cache certain parts of the page. We are *tag* certain information as cachable using render tags. This method builds a array of tags we will use to invalidate the cache when we update messages: 
 
-```
+```php
   /**
    * Get the render tags for given rids.
    *
@@ -322,7 +322,7 @@ Lets create a file in the following location:
 ```
 This file is going to contain all the information we need to let Drupal know we are exposing a service that will be retrievable from other areas of the system through what we call the *Service Container*. Lets go ahead and build this out, the comments in this file have some good explainations we can follow:  
 
-```
+```yaml
 # This file registers this modules service(s).
 services:
   # We only need 1 service to get and set our notices.
@@ -384,7 +384,7 @@ In this file we will define an object that will enable us to implement all the c
 
 Let go ahead and start writing some code: 
 
-```
+```php
 <?php
 /**
  * @file
@@ -401,7 +401,7 @@ use Drupal\Core\Form\FormStateInterface;
 
 Just as we did in our service, we first define our namespace and declare any other objects we will be using in our form implemenation.
 
-```
+```php
 /**
  * Simple Settings form.
  *
@@ -429,7 +429,7 @@ The other piece you will notice above is that we are defining a protected member
 
 Ok lets contruct this bad boy: 
 
-```
+```php
   /**
    * Class constructor.
    *
@@ -444,7 +444,7 @@ Look at that, there is our nifty contructor based dependency injection again!
 
 Unlike the services YAML file which took care of injecting our dependieces we need for our service, the FormBase also implements the *ContainerInjectionInterface* which requires us to define this next method: 
 
-```
+```php
 /**
    * Create function to provide our necessary service.
    *
@@ -472,7 +472,7 @@ Pretty cool stuff!
 
 One last auxillary method we need to define is the *getFormID* method. Because we do still have the hook system in Drupal 8 we need to tell our procedual code what our form ID is. This enables us to still use features such as `hook_form_alter` and the like: 
 
-```
+```php
   /**
    * Returns a unique string identifying the form.
    *
@@ -486,7 +486,7 @@ One last auxillary method we need to define is the *getFormID* method. Because w
 
 Ok with our form now able to create itself, inject its dependencies, and tell some of the legacy hooks who we are lets move onto actually defining our form by implementing the buildForm method: 
 
-```
+```php
 /**
    * Form constructor.
    *
@@ -531,7 +531,7 @@ Lets read this code. **What is it doing?**
 
 Ok, now we will be defining one more method in our form. That is our submit handler: 
 
-```
+```php
 /**
    * Form submission handler.
    *
@@ -572,7 +572,7 @@ The name of this file should always following the pattern <module-name>.routing.
 
 Alright lets go ahead and build this file out: 
 
-```
+```yaml
 # machine name for the route.
 # Convention for machine name is module_name.unique_name
 role_notices.settings_form:
@@ -597,7 +597,7 @@ Lets go ahead and create the following file:
 
 In this file we will define one simple permission: 
 
-```
+```yaml
 # Since the access to our new custom pages will be granted based on
 # special permissions, we need to define what those permissions are here.
 # This ensures that they are available to enable on the permissions
@@ -618,7 +618,7 @@ Ok one last small detail. We want our users to be able to access this form witho
 
 This file will define our menu entry for this route: 
 
-```
+```yaml
 # Define the 'local' links for the module
 role_notices.settings_form:
   title: 'Role Notices'
@@ -656,7 +656,7 @@ Alright, let keep moving...
 
 In order to properly integrate with the orderable fields screens in Drupal we need implement the *hook_entity_extra_field_info* hook. Through this hook we can add a display field to the **manage display** screen for the user entity. Lets see what this looks like: 
 
-```
+```php
 /**
  * Implements hook_entity_extra_field_info().
  *
@@ -686,7 +686,7 @@ The next hook we will need to implement will enable us to populate the display f
 
 Lets take a look at the code here: 
 
-```
+```php
 /**
  * Implements hook_ENTITY_TYPE_view().
  *
@@ -733,7 +733,7 @@ You will also notices we are using this object to retrieve the current user.
 
 Well do to the fact that we are using the types *UserInterface* and *EntityViewDisplayInterface* as parameters to this hook we do need to declare they use at the top of this file. If we did not we would need to decalare its absoluate namespace in the parameter list, not cool. Lets go ahead and add this code to the top of our file: 
 
-```
+```php
 <?php
 /**
  * @file
@@ -784,7 +784,7 @@ Lets dive into our block...
 
 Lets go ahead build our block with the following code: 
 
-```
+```php
 <?php
 
 /**
