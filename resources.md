@@ -68,6 +68,7 @@ You will need a robust IDE (PHPStorm, Eclipse, Netbeans): The importance of an I
 ### Drupal Console
 - [Drupal Console](https://drupalconsole.com/) -- checkout the **learning mode**!
 - [What is Drupal Console for me](http://enzolutions.com/articles/2015/01/25/what-is-drupal-console-for-me/)
+- [Drupal Console Git Book](https://hechoendrupal.gitbooks.io/drupal-console/)
 
 ### Drush Make
 - [Drush make documentation](http://www.drush.org/en/master/make/)
