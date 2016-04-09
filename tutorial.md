@@ -163,7 +163,7 @@ class NoticesManager {
   //all of our code will live here. 
 }
 ```
-OK now for our contructor. Now this starts to get interesting: 
+OK now for our constructor. Now this starts to get interesting:
 
 ```php
   /**
@@ -179,7 +179,7 @@ OK now for our contructor. Now this starts to get interesting:
     $this->state = $state;
   }
 ```
-Our contructor takes two parameters. The current user and the StateInterface. What we are seeing here is called Dependency Injection, more specifically contructor-based dependency injection. This is a popular, and powerful way to decouple the objects in our system. By injecting an objects dependencies we are not making hard, tightly coupled dependenices to other areas of the system. This makes our code better isolated and easier to test. 
+Our constructor takes two parameters. The current user and the StateInterface. What we are seeing here is called Dependency Injection, more specifically contructor-based dependency injection. This is a popular, and powerful way to decouple the objects in our system. By injecting an objects dependencies we are not making hard, tightly coupled dependenices to other areas of the system. This makes our code better isolated and easier to test.
 
 Ok lets move on to the methods that implement our functionality. Our first method will return all users notices for a particular users set of roles: 
 
@@ -200,7 +200,7 @@ Ok lets move on to the methods that implement our functionality. Our first metho
   
 Here we see how we can use the StateInterface to retrieve a given key from the State API. From there we filter out only the messages for the roles of the user with some nifty array functions. Finally we return the notices. 
 
-Now lets implement a simplier method that will return all notices in the system: 
+Now lets implement a simpler method that will return all notices in the system:
 
 ```php
 /**
@@ -298,7 +298,7 @@ Awesome... we just build our first service in Drupal 8, great work!
   
 But wait, now what? How do we use this? 
 
-In the next section we will need to tell Drupal that our service exsists and inject any dependcies we require. Lets keep moving...
+In the next section we will need to tell Drupal that our service exists and inject any dependencies we require. Lets keep moving...
 
 [Back to top](#top) 
 
@@ -306,7 +306,7 @@ In the next section we will need to tell Drupal that our service exsists and inj
 
 In our last section we dove into implementing our first service. Besides some of the State API and caching mumbojumbo we just implemented a standard PHP object that gets and sets an array. Drupal knows nothing about this object currently. 
 
-This introduces another pattern that will be persistant in our Drupal 8 development lives. Many of the the tasks we perform when developing consists of this idea: 
+This introduces another pattern that will be persistent in our Drupal 8 development lives. Many of the the tasks we perform when developing consists of this idea:
 
 ```
 Build a tool, and tell Drupal about it. 
@@ -360,13 +360,13 @@ Lets keep it moving!
 
 ## 3.0 Defining our first route
 
-A route is a path which is defined for Drupal to return some sort of content on. It is a way we map a path (URL) to a piece of code we write. Drupal 8's routing system replaces parts of hook_menu from previous versions. It is heavilly based on Synfomy's routing system, so by learning this you are in fact also learning some Symfony! 
+A route is a path which is defined for Drupal to return some sort of content on. It is a way we map a path (URL) to a piece of code we write. Drupal 8's routing system replaces parts of hook_menu from previous versions. It is heavily based on Symfony's routing system, so by learning this you are in fact also learning some Symfony!
 
 **So what route do we need to define?**
 
 ## 3.1 Our configuration form
 
-We want to expose a way for the users of our module to configure notices for any given role in the system. Towards this goal we would want a form that will expose this functionality. We will be learning two core concepts in this part of the excersise:
+We want to expose a way for the users of our module to configure notices for any given role in the system. Towards this goal we would want a form that will expose this functionality. We will be learning two core concepts in this part of the exercise:
 
 1. We will learn how to define form in Drupal 8. (build a tool) 
 2. We will learn how to hook up this form to a route (tell Drupal about it)
@@ -399,7 +399,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Form\FormStateInterface;
 ```
 
-Just as we did in our service, we first define our namespace and declare any other objects we will be using in our form implemenation.
+Just as we did in our service, we first define our namespace and declare any other objects we will be using in our form implementation.
 
 ```php
 /**
@@ -427,7 +427,7 @@ That's right, we are extending a base class. The base class we are extending is 
 
 The other piece you will notice above is that we are defining a protected member variable that will eventually hold our NoticesManager service. 
 
-Ok lets contruct this bad boy: 
+Ok lets construct this bad boy:
 
 ```php
   /**
@@ -440,9 +440,9 @@ Ok lets contruct this bad boy:
     $this->noticesManager = $notices_manager;
   }
 ```
-Look at that, there is our nifty contructor based dependency injection again! 
+Look at that, there is our nifty constructor based dependency injection again!
 
-Unlike the services YAML file which took care of injecting our dependieces we need for our service, the FormBase also implements the *ContainerInjectionInterface* which requires us to define this next method: 
+Unlike the services YAML file which took care of injecting our dependencies we need for our service, the FormBase also implements the *ContainerInjectionInterface* which requires us to define this next method:
 
 ```php
 /**
@@ -470,7 +470,7 @@ There are some interesting things happening here. This is what we call a **facto
 
 Pretty cool stuff! 
 
-One last auxillary method we need to define is the *getFormID* method. Because we do still have the hook system in Drupal 8 we need to tell our procedual code what our form ID is. This enables us to still use features such as `hook_form_alter` and the like: 
+One last auxiliary method we need to define is the *getFormID* method. Because we do still have the hook system in Drupal 8 we need to tell our procedual code what our form ID is. This enables us to still use features such as `hook_form_alter` and the like:
 
 ```php
   /**
@@ -525,7 +525,7 @@ Ok with our form now able to create itself, inject its dependencies, and tell so
     return $form;
   }
   ```
-For those of us familar with Drupal 7 form building this should look familar. We will still be defining these form arrays in this fashion. 
+For those of us familiar with Drupal 7 form building this should look familiar. We will still be defining these form arrays in this fashion.
 
 Lets read this code. **What is it doing?** 
 
@@ -561,7 +561,7 @@ Well... lets tell Drupal about it!
 
 Just as we experienced with the development of our service we now have a class implemented but Drupal does not know about it. How do we go about telling Drupal about our form? 
 
-This leads us to the introduction of our third YAML file, the routing.yml file. This file declares paths in our system and defines various properies of these paths. This file lives in our modules root directory. 
+This leads us to the introduction of our third YAML file, the routing.yml file. This file declares paths in our system and defines various properties of these paths. This file lives in our modules root directory.
 
 Lets go ahead and create a file in the following location: 
 
@@ -677,7 +677,7 @@ function role_notices_entity_extra_field_info() {
 
 Simply put this hook returns an array that contains information about the field we are defining. This code lives right in the .module file itself. 
 
-Notice that this hook does not define the contents of the field, it just defines its exsistance. This allows us to order this field on the manage display screen just as we can with any field in the Field UI. The next hook will actually do the work of populating the notices. 
+Notice that this hook does not define the contents of the field, it just defines its existence. This allows us to order this field on the manage display screen just as we can with any field in the Field UI. The next hook will actually do the work of populating the notices.
 
 
 ### 4.2 Populating our display field with notices
@@ -799,7 +799,7 @@ Lets go ahead build our block with the following code:
  *
  * *** IMPORTANCE OF AN IDE ***
  * In this class we will implement the interface: ContainerFactoryPluginInterface
- * To do so we must implement the methond "create".
+ * To do so we must implement the method "create".
  * If we don't do so this will be a fatal PHP error.
  *
  * If you are using a good IDE it will notify you are this error in your
@@ -923,19 +923,19 @@ Phew that was alot of code! Lets bring this into our project and discuss what is
 [Back to top](#top) 
 
 ## 6.0 Wrapping up
-Ok awesome, we covered alot of concepts in this excercise. As you can see our DX has changed significantly in this new version of Drupal.
+Ok awesome, we covered a lot of concepts in this exercise. As you can see our DX has changed significantly in this new version of Drupal.
 
 ### 6.1 Review core concepts
 So what did we learn today? Lets summarize: 
 
 1. The basic structure and layout of a Drupal 8 module. 
 2. The idea of a ***Service*** and how to inject them into various components. 
-3. We illulustrated how to develop Forms in Drupal 8.
+3. We illustrated how to develop Forms in Drupal 8.
 4. We learned how to define a Route and connect this to our form. 
 5. We saw how we will still use hooks and how to define a field on the user entity. 
 6. Lastly, we illustrated the Plugin system by defining our own block. 
 
-Wow! That is alot for one day. Good job! 
+Wow! That is a lot for one day. Good job!
 
 ### 6.2 Further Exploration
 Even with all we did today... there is still so much to learn. It never stops, its what makes this work exciting! We have a resources page available [here](https://github.com/Drupal-8-Study-Group/2016-april-d8-training-exercise/blob/master/resources.md) chock full of links for further exploration. 
