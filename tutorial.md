@@ -51,7 +51,7 @@ It is best practice to place custom modules in a `custom` directory and contribu
 /modules/custom/role_notices
 ```
 
-Lets go ahead and create these directories. 
+**Lets go ahead and create these directories.**
 
 ### 1.2 Creating our .info.yml file
 In order for Drupal to know about the exsistance of our module we need to tell Drupal about it. The is accomplished through the introduction of our first YAML file -- the .info.yml file. 
@@ -89,7 +89,7 @@ dependencies:
 
 Lets go ahead and place the above into our `role_notices.info.yml` file. Once you are done lets head over the to the `/admin/modules`. 
 
-What do you see?
+**What do you see?**
 
 [Back to top](#top)
 
@@ -115,13 +115,13 @@ Leaving any knowedge of Drupal development behind, fundamentally we will need co
 2. Set notices for any role in our system. 
 3. Get notices for any role in our system. 
 
-We will encapsulate this functionality into a single service. Lets call this service the NoticesManager.  Now let go ahead and create a file in the location below: 
+We will encapsulate this functionality into a single service. Lets call this service the NoticesManager.  Now let go ahead and **create a file in the location below**: 
 
 ```
 /modules/custom/role_notices/src/NoticesManager.php
 ```
 
-Ok great lets go ahead and build this bad boy out. Open this file in your editor and lets get building!  
+Ok great lets go ahead and build this bad boy out. **Open this file in your editor** and lets get building!
 
 In the first piece of our service we will define our class name, define our namespace, and declare some of the other objects we will be using: 
 
@@ -362,7 +362,7 @@ Lets keep it moving!
 
 A route is a path which is defined for Drupal to return some sort of content on. It is a way we map a path (URL) to a piece of code we write. Drupal 8's routing system replaces parts of hook_menu from previous versions. It is heavilly based on Synfomy's routing system, so by learning this you are in fact also learning some Symfony! 
 
-So what route do we need to define? 
+**So what route do we need to define?**
 
 ## 3.1 Our configuration form
 
@@ -421,7 +421,7 @@ class RoleNoticesSettingsForm extends FormBase {
 }
 ```
 
-What is one big difference you see in our class definition above? 
+**What is one big difference you see in our class definition above?**
 
 That's right, we are extending a base class. The base class we are extending is the *FormBase*. *FormBase* implements the *FormInterface*. This interface provides the blueprint for the required methods we need to implement in order to create a working form. 
 
@@ -470,7 +470,7 @@ There are some interesting things happening here. This is what we call a **facto
 
 Pretty cool stuff! 
 
-One last auxillary method we need to define is the *getFormID* method. Because we do still have the hook system in Drupal 8 we need to tell our procedual code what our form ID is. This enables us to still use features such as hook_form_alter and the like: 
+One last auxillary method we need to define is the *getFormID* method. Because we do still have the hook system in Drupal 8 we need to tell our procedual code what our form ID is. This enables us to still use features such as `hook_form_alter` and the like: 
 
 ```
   /**
@@ -527,7 +527,7 @@ Ok with our form now able to create itself, inject its dependencies, and tell so
   ```
 For those of us familar with Drupal 7 form building this should look familar. We will still be defining these form arrays in this fashion. 
 
-Lets read this code. What is it doing? 
+Lets read this code. **What is it doing?** 
 
 Ok, now we will be defining one more method in our form. That is our submit handler: 
 
@@ -729,7 +729,7 @@ You can think of this *\Drupal* object as a bridge between procedural land and O
 
 You will also notices we are using this object to retrieve the current user. 
 
-Ok so what are we missing here? 
+**Ok so what are we missing here?**
 
 Well do to the fact that we are using the types *UserInterface* and *EntityViewDisplayInterface* as parameters to this hook we do need to declare they use at the top of this file. If we did not we would need to decalare its absoluate namespace in the parameter list, not cool. Lets go ahead and add this code to the top of our file: 
 
@@ -757,7 +757,7 @@ Who wants more? If so, lets dive into a little bonus section... and define a blo
 
 Another large change to our Drupal development lives entails the idea of a plugin. Plugins are small pieces of functionality that are swappable. 
 
-What does that mean? 
+**What does that mean?**
 
 Well think of things like *field widgets* and *image styles*. Plugins implement different behaviors with a common interface. Unlike a service where the behavior is the same but the implementation may be different. Think about our NoticeManager service but using the Config system as opposed to the State API. 
 
