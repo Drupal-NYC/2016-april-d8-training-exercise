@@ -64,6 +64,7 @@ You will need a robust IDE (PHPStorm, Eclipse, Netbeans): The importance of an I
     
 - [XDebug](https://xdebug.org/)
 - [Devel](https://www.drupal.org/project/devel) - also remember to enable the **WebProfiler**!
+- [Logging (the change from watchdog() to using Logger)](https://drupalize.me/blog/201510/how-log-messages-drupal-8)
 
 ### Drupal Console
 - [Drupal Console](https://drupalconsole.com/) -- checkout the **learning mode**!
@@ -116,7 +117,6 @@ You will need a robust IDE (PHPStorm, Eclipse, Netbeans): The importance of an I
 ## Twig
 - [Twig documentation](http://twig.sensiolabs.org/documentation)
 - [Let's Debug Twig in Drupal 8!](https://drupalize.me/blog/201405/lets-debug-twig-drupal-8)
-
 
 ## Example Code
 - [Examples project](https://www.drupal.org/project/examples)
