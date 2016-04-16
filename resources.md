@@ -108,6 +108,7 @@ You will need a robust IDE (PHPStorm, Eclipse, Netbeans): The importance of an I
 - [A Tale of Two Base Themes in Drupal 8 core](https://www.lullabot.com/articles/a-tale-of-two-base-themes-in-drupal-8-core)
 - [Theming in Drupal 8 - David Hernandez deck from NJ Drupal Camp 2016](https://www.drupalcampnj.org/sites/default/files/sessions/Theming%20in%20Drupal%208.pdf)
 - [D8 Theming Guide](http://sqndr.github.io/d8-theming-guide/index.html)
+- [Drupal Template Helper - Chrome Extension for D7 & D8](https://github.com/arshad/drupal-template-helper)
 
 ## Standards
 - [SMACSS](https://smacss.com/)
