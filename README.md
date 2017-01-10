@@ -11,7 +11,7 @@
 ## About the Drupal Developer Training
 
 ### Important Links
-- [Drupal Developer Training Day Slides](http://drupal-8-study-group.github.io/2016-april-drupal8-training-day-deck/#/)
+- [Drupal Developer Training Day Slides](http://drupal-nyc.github.io/2016-april-drupal8-training-day-deck/)
 - **Important**: [Before you Get Started](#before-you-get-started)
 - [Tutorial](./tutorial.md)
 - [Resources](./resources.md)
